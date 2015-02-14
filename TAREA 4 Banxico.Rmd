@@ -1,0 +1,181 @@
+---
+title: "Ejercio Banxico"
+author: "Elizabeth Gorostieta - 137107
+         Anelisse Palacios - 136082"
+date: "11 de febrero de 2015"
+output: html_document
+---
+
+##Tarea 4
+```{r, echo=FALSE}
+directorio <-  "/Users/eligoros/Desktop/Estadi\314\201stica"
+```
+
+```{r, echo=FALSE}
+setwd(directorio)
+TC.Banxico <- read.table("./tipoCambioBanxico.txt", sep = "|", header = TRUE, stringsAsFactors = FALSE )
+```
+```{r, echo=FALSE}
+TC.Banxico$Fecha.DOF <- as.Date (TC.Banxico$Fecha.DOF, format = "%d/%m/%Y" )
+```
+
+```{r, echo=FALSE}
+temporal <- as.POSIXlt(TC.Banxico$Fecha.DOF)
+str(temporal)
+
+```
+
+```{r, echo=FALSE}
+anio <- unclass(temporal)$year+1900
+```
+
+```{r, echo=FALSE}
+TC.Banxico$anio <- unclass(temporal)$year+1900
+```
+```{r, echo=FALSE}
+TC.Banxico.existentes <- subset(TC.Banxico, TC!= "N/E")
+TC.Banxico.existentes$TC <- as.numeric(TC.Banxico.existentes$TC)
+```
+
+```{r, echo=FALSE}
+subset(TC.Banxico.existentes, anio == 2006, select = TC, drop = FALSE)
+```
+
+
+###Preguntas 1,2
+```{r, echo=FALSE}
+par(mfrow = c(3,3))
+
+for(i in 2006:2014){
+  tc <- subset(TC.Banxico.existentes, anio == i)
+  hist(tc$TC,
+  breaks = seq(9.9, 15.4, length.out = 30), 
+  xlim = c(9.9, 15.4), 
+  ylim = c(0, 120), 
+  xlab = "Tipo de Cambio",
+  ylab = "Frecuencia absoluta",
+  main = as.character (i),
+  col = "blue")
+media <- mean(tc$TC, na.rm =TRUE)
+mediana <- median(tc$TC, na.rm = TRUE)
+abline(v = media, col = "red", lwd = 1)
+abline(v = mediana, col ="black", lwd = 1)
+}
+
+```
+
+```{r, echo=FALSE}
+for(i in 2006:2014){hist(subset(TC.Banxico.existentes, anio == i, select = TC, drop = FALSE)$TC, col = "royalblue",  xlim = c(9.9, 15.4), 
+  ylim = c(0, 120),  xlab = "Tipo de Cambio",
+  ylab = "Frecuencia absoluta", breaks = seq(9.9, 15.4, length.out = 30),
+  main = as.character (i) )
+  media <- mean(subset(TC.Banxico.existentes, anio == i, select = TC, drop = FALSE)$TC, na.rm = TRUE)
+  mediana <- median(subset(TC.Banxico.existentes, anio == i, select = TC, drop = FALSE)$TC, na.rm = TRUE)
+abline(v = media, col = "firebrick1", lwd = 3)
+abline(v = mediana, col ="black", lwd = 3)
+  }
+
+
+
+
+```
+
+###Pregunta 3
+a) En el tipo de cambio del a??o 2006 podemos observar que la media es de 10.90266 pesos y la mediana es de 10.9046 pesos, por ello en el histograma se observa como si fueran iguales y se aproximan a los 11 pesos. 
+b) En el tipo de cambio del a??o 2007 podemos observar que la media es igual a 10.92703 pesos y es ligeramente menor a la mediana que es de 10.9312 pesos, por ello en el histograma casi se encuentran en la misma posici??n y se aproximan a los 11 pesos. 
+c) En el tipo de cambio del a??o 2008 podemos observar que la media es igual a 11.13224 pesos y la mediana es de 10.69595 pesos, por ello en el histograma se observa que la media es superior a la mediana. 
+d) En el tipo de cambio del a??o 2009 podemos observar que la media es igual a 13.50136 pesos y es mayor a la mediana que es de 13.3051 pesos, por ello en el histograma se observa que la media es superior a la mediana y ambas se encuentran en el intervalo que va de los 13 a los 14 pesos.
+e) En el tipo de cambio del a??o 2010 podemos observar que la media es igual a 12.63154 pesos y es ligeramente menor a la mediana que es de 12.64565 pesos, por ello en el histograma casi se encuentran en la misma posici??n y se encuentran en el intervalo que va de los 12 a los 13 pesos.
+f) En el tipo de cambio del a??o 2011 podemos observar que la media es igual a 13.17284 pesos y es mayor a la mediana que es de 13.0877 pesos, por ello en el histograma se observa que la media es superior a la mediana y ambas se encuentran en el intervalo que va de los 12 a los 13 pesos.
+g) En el tipo de cambio del a??o 2012 podemos observar que la media es igual a 13.17284 pesos y es mayor a la mediana que es de 13.0877 pesos, por ello en el histograma se observa que la media es superior a la mediana y ambas se encuentran en el intervalo que va de los 13 a los 14 pesos.
+h) En el tipo de cambio del a??o 2013 podemos observar que la media es igual a 12.7691 pesos y es ligeramente menor a la mediana que es de 12.7814 pesos, por ello en el histograma casi se encuentran en la misma posici??n y estan en el intervalo que va de los 12 a los 13 pesos.
+i) En el tipo de cambio del a??o 2014 podemos observar que la media es igual a 13.09952 pesos y es ligeramente mayor a la mediana que es de 13.08255 pesos, por ello en el histograma casi se encuentran en la misma posici??n y estan en el intervalo que va de los 13 a los 14 pesos.
+
+Podemos concluir que en el a??o 2009 la media y la mediana del tipo de cambio fueron mayores que en los dem??s a??os analizados y que en el a??o 2006 la media del tipo de cambio fue menor que en los dem??s a??os.
+
+```{r, echo=FALSE}
+mean(subset(TC.Banxico.existentes, anio == 2006, select = TC, drop = FALSE)$TC, 
+     na.rm = TRUE)
+median(subset(TC.Banxico.existentes, anio == 2006, select = TC, drop = FALSE)$TC, 
+     na.rm = TRUE)
+mean(subset(TC.Banxico.existentes, anio == 2007, select = TC, drop = FALSE)$TC, 
+     na.rm = TRUE)
+median(subset(TC.Banxico.existentes, anio == 2007, select = TC, drop = FALSE)$TC, 
+     na.rm = TRUE)
+mean(subset(TC.Banxico.existentes, anio == 2008, select = TC, drop = FALSE)$TC, 
+     na.rm = TRUE)
+median(subset(TC.Banxico.existentes, anio == 2008, select = TC, drop = FALSE)$TC, 
+     na.rm = TRUE)
+mean(subset(TC.Banxico.existentes, anio == 2009, select = TC, drop = FALSE)$TC, 
+     na.rm = TRUE)
+median(subset(TC.Banxico.existentes, anio == 2009, select = TC, drop = FALSE)$TC, 
+     na.rm = TRUE)
+mean(subset(TC.Banxico.existentes, anio == 2010, select = TC, drop = FALSE)$TC, 
+     na.rm = TRUE)
+median(subset(TC.Banxico.existentes, anio == 2010, select = TC, drop = FALSE)$TC, 
+     na.rm = TRUE)
+mean(subset(TC.Banxico.existentes, anio == 2011, select = TC, drop = FALSE)$TC, 
+     na.rm = TRUE)
+median(subset(TC.Banxico.existentes, anio == 2011, select = TC, drop = FALSE)$TC, 
+     na.rm = TRUE)
+mean(subset(TC.Banxico.existentes, anio == 2012, select = TC, drop = FALSE)$TC, 
+     na.rm = TRUE)
+median(subset(TC.Banxico.existentes, anio == 2012, select = TC, drop = FALSE)$TC, 
+     na.rm = TRUE)
+mean(subset(TC.Banxico.existentes, anio == 2013, select = TC, drop = FALSE)$TC, 
+     na.rm = TRUE)
+median(subset(TC.Banxico.existentes, anio == 2013, select = TC, drop = FALSE)$TC, 
+     na.rm = TRUE)
+mean(subset(TC.Banxico.existentes, anio == 2014, select = TC, drop = FALSE)$TC, 
+     na.rm = TRUE)
+median(subset(TC.Banxico.existentes, anio == 2014, select = TC, drop = FALSE)$TC, 
+     na.rm = TRUE)
+```
+
+
+
+
+###Pregunta 4
+```{r,echo =FALSE}
+par(mfrow = c(1,1), las=1)
+with(TC.Banxico.existentes,
+     boxplot(TC~factor(anio),
+             range = 0,
+             col = "purple1",
+             varwidth = TRUE))
+```
+
+###Pregunta 5
+Los resultados son similares a los obtenidos en la pregunta 3 sin embargo, en este tipo de gr??fica es m??s f??cil observar que durante el a??o 2009 el tipo de cambio fue el m??s elevado de todos los a??os analizados y que en el a??o 2008 el tipo de cambio alcanzo su m??nimo valor de todos los a??os analizados. Tambi??n se observa que la media del a??o 2009 es superior a la de los dem??s a??os, mientras que en 2006 la media es menor a la de los dem??s a??os. 
+
+
+
+
+
+###Pregunta 6
+```{r, echo=FALSE}
+normal <- function(x){
+  (1 / sqrt(2 * pi) * exp( - (x ^ 2) / 2))
+  }
+
+par( las = 1 )
+curve(normal, 
+      from = -4, to = 4,
+      xlab = "x", ylab = "f(x)",
+      n=100,
+      col = "red",
+      main = expression(paste("Grafica de la funcion ", 
+                              (1 / sqrt(2 * pi) * exp( - (x ^ 2) / 2))
+                              )
+                        )
+      )
+      
+abline(v = 0, col = "black"); 
+
+
+
+points(x = 0, y = normal(0) , col = "blue", pch=16)
+text(normal(0),"Valor Maximo", pos = 4)
+      
+```
+         
